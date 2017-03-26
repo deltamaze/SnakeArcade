@@ -1,0 +1,46 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "rooms":{
+      "$room": {
+        ".write": "newData.hasChildren(['user', 'timestamp'])",
+        "user":
+        {
+          ".validate": "auth.uid === newData.val() "
+        },
+          "timestamp":
+        {
+          ".validate": "newData.val() === now "
+        },
+        "$other": {
+            ".validate": false 
+        }
+      }
+    },
+    "players":{
+      "$room": {
+        ".write": "newData.hasChildren(['user', 'playerNum','x','y']) && !data.exists()",
+        "user":
+        {
+          ".validate": "auth.uid === newData.val() "
+        },
+        "playerNum":
+        {
+          ".validate": "newData.val() === 1 || newData.val() === 2 "
+        },
+        "x":
+        {
+          ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+        },
+        "y":
+        {
+          ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+        },
+        "$other": {
+            ".validate": false 
+        }
+      }
+    }
+  }
+}
