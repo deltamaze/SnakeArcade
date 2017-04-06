@@ -9,10 +9,12 @@ function GameService()
     this.cols = Math.floor(this.canvasHeight/this.gameScale);
     this.rows = Math.floor(this.canvasWidth/this.gameScale);
     this.food = new Food();
+    
+    
 
     this.startGame= function (){
         this.gameStarted = true;
-        this.players[1].x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
+        this.resetPlayerPosition(-1);
         this.spawnFood();
         setInterval(this.myTimer, this.gameUpdateTime);
     }
@@ -23,8 +25,8 @@ function GameService()
 
     this.spawnFood = function()  {
         
-        this.food.x = Math.floor(Math.random() * (this.cols - 0 + 1)) + 0;
-        this.food.y=  Math.floor(Math.random() * (this.rows - 0 + 1)) + 0;
+        this.food.x = (Math.floor(Math.random() * (this.cols - 0 + 1)) + 0)* this.gameScale;
+        this.food.y=  (Math.floor(Math.random() * (this.rows - 0 + 1)) + 0)* this.gameScale;
         console.log(this.food.x);
         console.log(this.players);
     }
@@ -51,6 +53,20 @@ function GameService()
         var b = y1 - y2
 
         var c = Math.sqrt( a*a + b*b );
+    }
+    this.resetPlayerPosition = function (playerNum) {
+        if (playerNum ===0 || playerNum ===-1 )
+        {
+            this.players[0].x = 0
+            this.players[0].y = 0
+
+        }
+        if (playerNum ===1 || playerNum ===-1 )
+        {
+            this.players[1].x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
+            this.players[1].y = 0
+            
+        }
     }
 
 
