@@ -1,0 +1,58 @@
+function GameService()
+{
+    this.gameStarted = false;
+    this.players = [new Snake(),new Snake()]
+    this.gameUpdateTime = 100;
+    this.canvasHeight = 300;
+    this.canvasWidth = 300;
+    this.gameScale = 10;//how large game pixel is
+    this.cols = Math.floor(this.canvasHeight/this.gameScale);
+    this.rows = Math.floor(this.canvasWidth/this.gameScale);
+    this.food = new Food();
+
+    this.startGame= function (){
+        this.gameStarted = true;
+        this.players[1].x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
+        this.spawnFood();
+        setInterval(this.myTimer, this.gameUpdateTime);
+    }
+
+    this.myTimer = function() {
+        //console.log('test');
+    }
+
+    this.spawnFood = function()  {
+        
+        this.food.x = Math.floor(Math.random() * (this.cols - 0 + 1)) + 0;
+        this.food.y=  Math.floor(Math.random() * (this.rows - 0 + 1)) + 0;
+        console.log(this.food.x);
+        console.log(this.players);
+    }
+    this.eat = function() {
+
+    }
+    this.gameOver = function() {
+
+    }
+    this.updateSnake = function() {
+        for(var x = 0;x<=this.players.Length;x++)
+        {}
+        var d = calcDist(this.x, this.y, food.x, food.y);Math.sqrt( a*a + b*b );
+        if (d < 1) {
+            this.total++;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    this.calcDist = function(x1,y1,x2,y2){
+        var a = x1 - x2
+        var b = y1 - y2
+
+        var c = Math.sqrt( a*a + b*b );
+    }
+
+
+}
+

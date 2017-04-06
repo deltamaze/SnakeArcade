@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col-md-6">
           <h2>Current Room - X</h2>
-          <button type="button" class="btn btn-primary" disabled="disabled" onclick="joinGame(1);" >Start Player 1</button>
+          <button type="button" class="btn btn-primary"  onclick="joinGame(1);" >Start Player 1</button>
           <button type="button" class="btn btn-danger" disabled="disabled">Start Player 2</button>
           <div id="p5-holder">
           <!-- Our p5 app will go here! -->
@@ -53,7 +53,9 @@
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="libraries/bootstrap.js"></script>
   <script language="javascript" type="text/javascript" src="app.js"></script>
-  <script language="javascript" type="text/javascript" src="snake.js"></script>
+  <script language="javascript" type="text/javascript" src="./models/snake.js"></script>
+  <script language="javascript" type="text/javascript" src="./models/food.js"></script>
+  <script language="javascript" type="text/javascript" src="./services/gameService.js"></script>
 </body>
 
 </html>

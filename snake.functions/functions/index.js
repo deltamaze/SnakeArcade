@@ -32,5 +32,5 @@ exports.startGame =functions.database.ref('/players/{pushId}/')
         // });
     
         return;
-    });
+    }); 
       
