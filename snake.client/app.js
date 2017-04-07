@@ -67,6 +67,3 @@ function drawSnakes(){
     setCourse(1,0);
   }
 }
-
-
-//firebase code

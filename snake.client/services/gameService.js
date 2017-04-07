@@ -12,13 +12,25 @@ function GameService()
     
     //p1InputRef
     //p2InputRef
-    
+    var p1Ref = firebase.database().ref('players/' + room + '/' + 1);
+    var p2Ref = firebase.database().ref('players/' + room + '/' + 2);
+    var p1;
+    var p2;
 
     this.startGame= function (){
         this.gameStarted = true;
         this.resetPlayerPosition(-1);
         this.spawnFood();
+        this.setPlayers();
         setInterval(this.myTimer, this.gameUpdateTime);
+    }
+    this.setPlayers = function(){
+        p1Ref.on("value", function(snapshot) {
+            p1 = snapshot;
+        });
+        p2Ref.on("value", function(snapshot) {
+            p2 = snapshot;
+        });
     }
 
     this.myTimer = function() {
