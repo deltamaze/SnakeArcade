@@ -5,4 +5,5 @@ function Snake()
     this.xSpeed = 0;
     this.ySpeed= 0;
     this.tail = []
+    this.playerNum = 0;
 }

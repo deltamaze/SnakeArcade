@@ -2,7 +2,8 @@
 var gameService;
 var p1Color;
 var p2Color;
-var foodColor
+var foodColor;
+var gameScale;
 //Setup Canvas
 function setup() {
     var canvas = createCanvas(300,300);
@@ -11,47 +12,61 @@ function setup() {
     p1Color =  color(0, 102, 255)//blue
     p2Color = color(255, 0, 0);//red
     foodColor = color(255,0,100);//pink
+    gameScale = 10;
 
 
 }
 function draw() {
   background(51);
-  if(gameService.gameStarted)
+  if(gameInProgress)
   {
     drawSnakes();
     drawFood();
   }
 }
-function joinGame(player)
-{
-  gameService.startGame();
-  console.log(gameService.players);
-}
+
 function drawSnakes(){
-  for(var j = 0; j < gameService.players.length; j++)
+  for(var j = 0; j < snakes.length; j++)
   {
-        if(j==0)//p1 color
+        if(snakes[j].playerNum==1)//p1 color
         {
           fill(p1Color);
         }
-        else if(j==1)//p2 color
+        else if(snakes[j].playerNum==2)//p2 color
         {
           fill(p2Color);
         }
         else
         {
-          fill(255);
+          fill(255);//white
         }
         //draw Tail
-        for (var i = 0; i < gameService.players[j].tail.length; i++) { 
-            rect(gameService.players[j].tail[i].x, gameService.players[j].tail[i].y, gameService.gameScale, gameService.gameScale);
+        for (var i = 0; i < snakes[j].tail.length; i++) { 
+            rect(snakes[j].tail[i].x, snakes[j].tail[i].y, gameScale, gameScale);
         }
         //draw Head
-        rect(gameService.players[j].x, gameService.players[j].y, gameService.gameScale, gameService.gameScale);
+        rect(snakes[j].x, snakes[j].y, gameScale, gameScale);
     }
   }
   function drawFood(){
     fill(foodColor);
-    rect(gameService.food.x, gameService.food.y, gameService.gameScale, gameService.gameScale);
+    rect(food.x, food.y, gameScale, gameScale);
     //console.log(gameService.food.x);
   }
+  function keyPressed(){
+  if(keyCode ===UP_ARROW || keyCode ===87){
+    setCourse(0,-1);
+  }
+  else if(keyCode ===DOWN_ARROW || keyCode ===83){
+    setCourse(0,1);
+  }
+  else if(keyCode ===LEFT_ARROW || keyCode ===65){
+    setCourse(-1,0);
+  }
+  else if(keyCode ===RIGHT_ARROW || keyCode ===68){
+    setCourse(1,0);
+  }
+}
+
+
+//firebase code

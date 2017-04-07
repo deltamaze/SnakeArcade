@@ -35,15 +35,7 @@ setInterval(function () {
   }
 }, 5000);
 
-function joinGame(num)
-{
-  player.playerNum = num;
-  if(firebase.auth().currentUser)//if authenticated
-  {
-    firebase.database().ref('players/'+room).set(player);
-  }
 
-}
 //Setup Canvas
 function setup() {
     var canvas = createCanvas(300,300);

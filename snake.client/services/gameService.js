@@ -10,6 +10,8 @@ function GameService()
     this.rows = Math.floor(this.canvasWidth/this.gameScale);
     this.food = new Food();
     
+    //p1InputRef
+    //p2InputRef
     
 
     this.startGame= function (){
@@ -34,6 +36,9 @@ function GameService()
 
     }
     this.gameOver = function() {
+        //p1 gameOver
+        //p2 gameOver
+        //both player gameOver/ dispose timer
 
     }
     this.updateSnake = function() {
@@ -65,8 +70,12 @@ function GameService()
         {
             this.players[1].x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
             this.players[1].y = 0
-            
         }
+    }
+
+    this.saveSnakeLocation = function(snakes)
+    {
+        
     }
 
 
