@@ -9,11 +9,11 @@ function GameService()
     this.cols = Math.floor(this.canvasHeight/this.gameScale);
     this.rows = Math.floor(this.canvasWidth/this.gameScale);
     this.food = new Food();
-    
+    this.room = 'Main';
     //p1InputRef
     //p2InputRef
-    var p1Ref = firebase.database().ref('players/' + room + '/' + 1);
-    var p2Ref = firebase.database().ref('players/' + room + '/' + 2);
+    var p1Ref = firebase.database().ref('players/' + this.room + '/1');
+    var p2Ref = firebase.database().ref('players/' + this.room + '/2');
     var p1;
     var p2;
 
@@ -26,15 +26,17 @@ function GameService()
     }
     this.setPlayers = function(){
         p1Ref.on("value", function(snapshot) {
-            p1 = snapshot;
+            p1 = snapshot.val();
         });
         p2Ref.on("value", function(snapshot) {
-            p2 = snapshot;
+            p2 = snapshot.val();
         });
     }
 
     this.myTimer = function() {
-        //console.log('test');
+        console.log(p1);
+        console.log(this.room);
+        
     }
 
     this.spawnFood = function()  {
