@@ -6,4 +6,6 @@ function Snake()
     this.ySpeed= 0;
     this.tail = []
     this.playerNum = 0;
+    this.total = 0;
+    this.gameOver = false;
 }
