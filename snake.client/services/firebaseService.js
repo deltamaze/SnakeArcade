@@ -15,13 +15,14 @@ var roomPing = {
 var p1Ref = firebase.database().ref('players/' + room + '/' + 1);
 var p2Ref = firebase.database().ref('players/' + room + '/' + 2);
 //var snakesRef = firebase.database().ref('snakes/'+room+'/'+1);
-//var food = firebase.database().ref('food/'+room+'/'+2);
+var foodRef = firebase.database().ref('food/' + room );
+var snakeRef = firebase.database().ref('snakes/' + this.room );
 var snakes = [new Snake()]
-var food = new Food();
+var food = new Vector();
 
 var gameInProgress = false;
 //Client Function get player status
-function checkExistingPlayers() {
+function setUpRefs() {
   //check p1
   p1Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
@@ -35,13 +36,19 @@ function checkExistingPlayers() {
 
   });
   //check p2
+  //setupFood
+  foodRef.on('value', function (snapshot) {
+    food = snapshot.val()});
+  //setupSnakes
+  snakeRef.on('value', function (snapshot) {
+    snakes = snapshot.val()});
 }
 //Authenticate
 firebase.auth().signInAnonymously().then(function () {
   userId = firebase.auth().currentUser.uid;
   roomPing.user = userId;
   player.user = userId;
-  checkExistingPlayers()
+  setUpRefs();
 })
   .catch(function (error) {
     this.handleError(error);
@@ -59,7 +66,7 @@ setInterval(function () {
 
 //Client Function: join start
 function joinGame(num) {
-  gameService.startGame();
+  gameService.startGame(room);
   player.playerNum = num;
   if (firebase.auth().currentUser)//if authenticated
   {

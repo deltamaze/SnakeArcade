@@ -26,6 +26,10 @@ function draw() {
 }
 
 function drawSnakes(){
+  if (snakes === null)
+  {
+    return;
+  }
   for(var j = 0; j < snakes.length; j++)
   {
         if(snakes[j].playerNum==1)//p1 color
