@@ -44,12 +44,17 @@ function drawSnakes(){
         {
           fill(255);//white
         }
+        //draw Head
+        rect(snakes[j].x, snakes[j].y, gameScale, gameScale);
         //draw Tail
+        if(typeof snakes[j].tail === 'undefined')
+        {
+          break; //if tail does not exist, exit loop
+        }
         for (var i = 0; i < snakes[j].tail.length; i++) { 
             rect(snakes[j].tail[i].x, snakes[j].tail[i].y, gameScale, gameScale);
         }
-        //draw Head
-        rect(snakes[j].x, snakes[j].y, gameScale, gameScale);
+        
     }
   }
   function drawFood(){
