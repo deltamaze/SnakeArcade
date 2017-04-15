@@ -32,6 +32,7 @@ function drawSnakes(){
   }
   for(var j = 0; j < snakes.length; j++)
   {
+        
         if(snakes[j].playerNum==1)//p1 color
         {
           fill(p1Color);
@@ -45,11 +46,11 @@ function drawSnakes(){
           fill(255);//white
         }
         //draw Head
-        rect(snakes[j].x, snakes[j].y, gameScale, gameScale);
+        rect(snakes[j].vect.x, snakes[j].vect.y, gameScale, gameScale);
         //draw Tail
         if(typeof snakes[j].tail === 'undefined')
         {
-          break; //if tail does not exist, exit loop
+          continue; //if tail does not exist, continue loop
         }
         for (var i = 0; i < snakes[j].tail.length; i++) { 
             rect(snakes[j].tail[i].x, snakes[j].tail[i].y, gameScale, gameScale);

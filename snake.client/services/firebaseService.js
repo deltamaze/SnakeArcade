@@ -3,8 +3,8 @@ var room = "Main";
 var player = {
   playerNum: null,
   user: null,
-  x: 0,
-  y: 0
+  xSpeed: 0,
+  ySpeed: 0
 }
 
 var roomPing = {
@@ -41,7 +41,8 @@ function setUpRefs() {
     food = snapshot.val()});
   //setupSnakes
   snakeRef.on('value', function (snapshot) {
-    snakes = snapshot.val()});
+    snakes = snapshot.val();
+    console.log(snakes);});
 }
 //Authenticate
 firebase.auth().signInAnonymously().then(function () {
@@ -70,14 +71,14 @@ function joinGame(num) {
   player.playerNum = num;
   if (firebase.auth().currentUser)//if authenticated
   {
-    firebase.database().ref('players/' + room + '/' + player.playerNum).set(player).then(res => checkExistingPlayers());
+    firebase.database().ref('players/' + room + '/' + player.playerNum).set(player).then(res => setUpRefs());
   }
 }
 //Update Direction
 function setCourse(x, y) {
   if (player.playerNum != null) {
-    player.x = x;
-    player.y = y;
+    player.xSpeed = x;
+    player.ySpeed = y;
   }
   else {
     return;
