@@ -18,11 +18,8 @@ function setup() {
 }
 function draw() {
   background(51);
-  if(gameInProgress)
-  {
-    drawSnakes();
-    drawFood();
-  }
+  drawSnakes();
+  drawFood();
 }
 
 function drawSnakes(){

@@ -20,6 +20,10 @@ function GameService()
     this.snakeRef = firebase.database().ref('snakes/' + this.room );
     this.p1 ;
     this.p2 ;
+    this.timeCounter = 0;
+    this.myTimer;
+    this.gameEngine;
+
 
     this.startGame= function (roomName){
 
@@ -32,7 +36,7 @@ function GameService()
         
         this.spawnFood();
         
-        setInterval(this.myTimer.bind(this), this.gameUpdateTime);
+        this.myTimer = setInterval(this.gameEngine.bind(this), this.gameUpdateTime);
         console.log(this.gameUpdateTime);
     }
     this.setPlayers = function(){
@@ -49,16 +53,23 @@ function GameService()
        
     }
 
-    this.myTimer = function() {
+    this.gameEngine = function() {
+        this.timeCounter++;
         if(this.eatFood())
         {
             this.spawnFood();
         }
         this.checkGameOver();//check to see if players lost
         this.updateSnake();
-
-
         this.saveSnakeLocation();
+
+        if ((this.p1 === null && this.p2 === null)|| this.timeCounter > 3000)//if both players dead, or game time past 10 minutes, end timer
+        {
+            clearInterval(this.myTimer);
+        }
+
+        
+
     }
 
     this.spawnFood = function()  {
@@ -98,10 +109,22 @@ function GameService()
                             this.resetPlayerPosition(this.snakes[i].playerNum);
                             //this.snakes[i].gameOver = true;
                             //delete player from Firebase
+                            if(this.snakes[i].playerNum === 1)
+                            {
+                                this.p1Ref.set(null);
+
+                            }
+                            else(this.snakes[i].playerNum === 2)
+                            {
+                                this.p2Ref.set(null);
+                            }
                         }
                     }
                 }
             }
+
+
+
 
 
         // for (var i = 0; i < this.tail.length; i++)
