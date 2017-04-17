@@ -3,7 +3,7 @@ function GameService()
     this.gameStarted = false;
     this.snakes = [new Snake(),new Snake()]
     
-    this.snak
+
     this.gameUpdateTime = 100;
     this.canvasHeight = 300;
     this.canvasWidth = 300;
@@ -23,13 +23,17 @@ function GameService()
 
     this.startGame= function (roomName){
 
+        //clearOutOldRooms
         this.room = roomName
         this.gameStarted = true;
-        this.setPlayers();
         this.resetPlayerPosition(-1);
-        this.spawnFood();
         this.saveSnakeLocation();
+        this.setPlayers();
+        
+        this.spawnFood();
+        
         setInterval(this.myTimer.bind(this), this.gameUpdateTime);
+        console.log(this.gameUpdateTime);
     }
     this.setPlayers = function(){
         
@@ -48,7 +52,6 @@ function GameService()
     this.myTimer = function() {
         if(this.eatFood())
         {
-            console.log("spawnfood");
             this.spawnFood();
         }
         this.checkGameOver();//check to see if players lost
@@ -62,6 +65,7 @@ function GameService()
         
         this.food.x = (Math.floor(Math.random() * (this.cols - 0 + 1)) + 0)* this.gameScale;
         this.food.y=  (Math.floor(Math.random() * (this.rows - 0 + 1)) + 0)* this.gameScale;
+        this.food = this.limitPosition(this.food);
         this.foodRef.set(this.food);
     }
 
@@ -69,7 +73,6 @@ function GameService()
         consumed = false;
         for(var j = 0;j<this.snakes.length;j++)
         {
-            console.log(this.snakes[j]);
             var d = this.calcDist(this.snakes[j].vect.x, this.snakes[j].vect.y, food.x, food.y);
             if (d < 1) {
                 this.snakes[j].total++;
@@ -80,27 +83,25 @@ function GameService()
     }
 
     this.checkGameOver = function() {
-        for(var j = 0;j<=this.snakes.Length;j++)
-        {
-
             //nested innerloop to test both 
-            for(var i = 0;i<=this.snakes.length;i++)//See if Snake[i]'s head is overlapping with any tail position of any other snake.
+            for(var i = 0;i<this.snakes.length;i++)//See if Snake[i]'s head is overlapping with any tail position of any other snake.
             {
-                for(var j = 0;j<=this.snakes.length;j++)//grab all snakes(j) to see if the head of snake i is ontop of the body of snake j
+                for(var j = 0;j<this.snakes.length;j++)//grab all snakes(j) to see if the head of snake i is ontop of the body of snake j
                 {
-                    for (var k = 0; k < this.snakes[j].tail.length; k++)//test all possible tail positions for snake J
+                    console.log(this.snakes);
+                    for (var k = 1; k < this.snakes[j].tail.length; k++)//test all possible tail positions for snake J
                     {
                         var pos = this.snakes[j].tail[k];
+                        
                         var d = this.calcDist(this.snakes[i].vect.x,this.snakes[i].vect.y,pos.x,pos.y);
                         if(d<1){
-                            this.snakes[i].total = 0;
-                            this.snakes[i].tail = [];
-                            this.snakes[i].gameOver = true;
+                            this.resetPlayerPosition(this.snakes[i].playerNum);
+                            //this.snakes[i].gameOver = true;
+                            //delete player from Firebase
                         }
                     }
                 }
             }
-        }
 
 
         // for (var i = 0; i < this.tail.length; i++)
@@ -120,41 +121,41 @@ function GameService()
         
         for(var j = 0; j < this.snakes.length; j++)
         {
-            //    if(this.snakes[j].total=== this.snakes[j].tail.length){
-            //         for (var i = 0; i < this.snakes[j].tail.length; i++) {
-            //             this.tail[i] = this.tail[i+1];
-            //     }}
-            //     else
-            //     {
-            //     }
-            //     this.snakes[j].tail[this.total-1] = createVector(this.x,this.y)
-                
-                
-                if (this.p1 !== null)
+            if(this.snakes[j].gameOver === true)
+            {
+                continue;
+            }
+            if(this.snakes[j].total > this.snakes[j].tail.length - 1) //snake as eaten something, so we must grow the tail 
+            {
+                this.snakes[j].tail[this.snakes[j].tail.length] = new Vector();
+            }
+            
+                if(this.snakes[j].total >= 1)//if the snake has a tail, then update all tail units
                 {
+            
+                    for(var i = this.snakes[j].total; i>=1; i--)
+                    {
+                        this.snakes[j].tail[i].x = this.snakes[j].tail[i-1].x;
+                        this.snakes[j].tail[i].y = this.snakes[j].tail[i-1].y;
+                    }
+                }
+                
+                //update snake head position
+                if (this.p1 !== null && this.snakes[j].playerNum == 1)
+                {
+                    
                     this.snakes[j].vect.x = this.snakes[j].vect.x + this.p1.xSpeed * this.gameScale;
                     this.snakes[j].vect.y = this.snakes[j].vect.y + this.p1.ySpeed * this.gameScale;
                 }
-               
-                
-                if(this.snakes[j].vect.x > (this.canvasWidth - this.gameScale))
+                if (this.p2 !== null && this.snakes[j].playerNum == 2)
                 {
-                    this.snakes[j].vect.x = (this.canvasWidth - this.gameScale);//limit x to canvas width
+                    this.snakes[j].vect.x = this.snakes[j].vect.x + this.p2.xSpeed * this.gameScale;
+                    this.snakes[j].vect.y = this.snakes[j].vect.y + this.p2.ySpeed * this.gameScale;
                 }
-                if(this.snakes[j].vect.y > (this.canvasHeight - this.gameScale))
-                {
-                    this.snakes[j].vect.y = (this.canvasHeight - this.gameScale);//limit y to canvas height
-                }
-                if(this.snakes[j].vect.x < (0))
-                {
-                    this.snakes[j].vect.x = 0;//limit x to canvas width
-                }
-                if(this.snakes[j].vect.y < (0))
-                {
-                    this.snakes[j].vect.y = (0);//limit y to canvas height
-                }
-                //this.snakes[j].x = constrain(this.x, 0, width - this.gameScale)
-                //this.y = constrain(this.y, 0, height - scl)
+                this.snakes[j].vect = this.limitPosition(this.snakes[j].vect );
+                this.snakes[j].tail[0].x = this.snakes[j].vect.x;
+                this.snakes[j].tail[0].y = this.snakes[j].vect.y;
+
 
             
         }
@@ -173,20 +174,49 @@ function GameService()
         {
             this.snakes[0].vect.x = 0
             this.snakes[0].vect.y = 0
+            this.snakes[0].total = 0
+            this.snakes[0].tail = [];
+            this.snakes[0].tail[0] = this.snakes[0].vect
 
         }
         if (playerNum ===2 || playerNum ===-1 )
         {
             this.snakes[1].vect.x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
             this.snakes[1].vect.y = 0
+            this.snakes[1].total = 0
+            this.snakes[1].tail = [];
+            this.snakes[1].tail[0] = this.snakes[1].vect
         }
+
     }
 
     this.saveSnakeLocation = function(snakes)
     {
         this.snakeRef.set(this.snakes);
     }
+    this.limitPosition = function(vect)
+    {
 
+        returnVect = new Vector();
+        if(vect.x > (this.canvasWidth - this.gameScale))
+        {
+            vect.x = (this.canvasWidth - this.gameScale);//limit x to canvas width
+        }
+        if(vect.y > (this.canvasHeight - this.gameScale))
+        {
+            vect.y = (this.canvasHeight - this.gameScale);//limit y to canvas height
+        }
+        if(vect.x < (0))
+        {
+            vect.x = 0;//limit x to canvas width
+        }
+        if(vect.y < (0))
+        {
+            vect.y = (0);//limit y to canvas height
+        }
+        returnVect = vect;
+        return returnVect;
+    }
 
 }
 

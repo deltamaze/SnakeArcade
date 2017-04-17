@@ -36,13 +36,24 @@ function setUpRefs() {
 
   });
   //check p2
+  p2Ref.on('value', function (snapshot) {
+    if (snapshot.val() === null) {
+      $('#buttonP2').prop('disabled', false);
+      gameInProgress = false;
+    }
+    else {
+      $('#buttonP2').prop('disabled', true);
+      gameInProgress = true;
+    }
+
+  });
   //setupFood
   foodRef.on('value', function (snapshot) {
     food = snapshot.val()});
   //setupSnakes
   snakeRef.on('value', function (snapshot) {
     snakes = snapshot.val();
-    console.log(snakes);});
+    });
 }
 //Authenticate
 firebase.auth().signInAnonymously().then(function () {
