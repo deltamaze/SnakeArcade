@@ -20,6 +20,7 @@ exports.startGame =functions.database.ref('/players/{pushId}/')
         if (!event.data.exists()) {
             return;
         }
+        var eventSnapshot = event.data;
         const original = event.data.val();
         var x = 1
         admin.database().ref('/test/').set({foo:'bar'});

@@ -37,7 +37,6 @@ function GameService()
         this.spawnFood();
         
         this.myTimer = setInterval(this.gameEngine.bind(this), this.gameUpdateTime);
-        console.log(this.gameUpdateTime);
     }
     this.setPlayers = function(){
         
@@ -62,6 +61,7 @@ function GameService()
         this.checkGameOver();//check to see if players lost
         this.updateSnake();
         this.saveSnakeLocation();
+        console.log(this.timeCounter);
 
         if ((this.p1 === null && this.p2 === null)|| this.timeCounter > 3000)//if both players dead, or game time past 10 minutes, end timer
         {
@@ -99,7 +99,6 @@ function GameService()
             {
                 for(var j = 0;j<this.snakes.length;j++)//grab all snakes(j) to see if the head of snake i is ontop of the body of snake j
                 {
-                    console.log(this.snakes);
                     for (var k = 1; k < this.snakes[j].tail.length; k++)//test all possible tail positions for snake J
                     {
                         var pos = this.snakes[j].tail[k];
