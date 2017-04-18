@@ -13,10 +13,10 @@ function GameService() {
     this.room = 'Main';
     //p1InputRef
     //p2InputRef
-    this.p1Ref = firebase.database().ref('players/' + this.room + '/1');
-    this.p2Ref = firebase.database().ref('players/' + this.room + '/2');
-    this.foodRef = firebase.database().ref('food/' + this.room);
-    this.snakeRef = firebase.database().ref('snakes/' + this.room);
+    this.p1Ref;
+    this.p2Ref;
+    this.foodRef;
+    this.snakeRef;
     this.p1;
     this.p2;
     this.timeCounter = 0;
@@ -28,6 +28,10 @@ function GameService() {
 
         //clearOutOldRooms
         this.room = roomName
+        this.p1Ref = firebase.database().ref('players/' + this.room + '/1');
+        this.p2Ref = firebase.database().ref('players/' + this.room + '/2');
+        this.foodRef = firebase.database().ref('food/' + this.room);
+        this.snakeRef = firebase.database().ref('snakes/' + this.room);
         this.gameStarted = true;
         this.resetPlayerPosition(-1);
         this.saveSnakeLocation();

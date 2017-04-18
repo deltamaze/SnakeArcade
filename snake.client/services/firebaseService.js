@@ -1,4 +1,4 @@
-var room = "Main";
+var room = "Main2";
 
 var player = {
   playerNum: null,
@@ -20,18 +20,15 @@ var snakeRef = firebase.database().ref('snakes/' + this.room );
 var snakes = [new Snake()]
 var food = new Vector();
 
-var gameInProgress = false;
 //Client Function get player status
 function setUpRefs() {
   //check p1
   p1Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
       $('#buttonP1').prop('disabled', false);
-      gameInProgress = false;
     }
     else {
       $('#buttonP1').prop('disabled', true);
-      gameInProgress = true;
     }
 
   });
@@ -39,11 +36,9 @@ function setUpRefs() {
   p2Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
       $('#buttonP2').prop('disabled', false);
-      gameInProgress = false;
     }
     else {
       $('#buttonP2').prop('disabled', true);
-      gameInProgress = true;
     }
 
   });
@@ -78,7 +73,7 @@ setInterval(function () {
 
 //Client Function: join start
 function joinGame(num) {
-  gameService.startGame(room);
+  
   player.playerNum = num;
   if (firebase.auth().currentUser)//if authenticated
   {

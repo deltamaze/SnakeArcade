@@ -1,5 +1,4 @@
 
-var gameService;
 var p1Color;
 var p2Color;
 var foodColor;
@@ -8,13 +7,11 @@ var gameScale;
 function setup() {
     var canvas = createCanvas(300,300);
     canvas.parent('p5-holder');
-    gameService= new GameService();
+    
     p1Color =  color(0, 102, 255)//blue
     p2Color = color(255, 0, 0);//red
     foodColor = color(255,0,100);//pink
     gameScale = 10;
-
-
 }
 function draw() {
   background(51);
@@ -57,7 +54,10 @@ function drawSnakes(){
   }
   function drawFood(){
     fill(foodColor);
-    rect(food.x, food.y, gameScale, gameScale);
+    if(food != null)
+    {
+      rect(food.x, food.y, gameScale, gameScale);
+    }
     //console.log(gameService.food.x);
   }
   function keyPressed(){
