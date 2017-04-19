@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 
-app.get('/', function(req, res){
+app.post('/startgame/:roomName', function(req, res){
   res.send('<h1>Hello world</h1>');
 });
 
