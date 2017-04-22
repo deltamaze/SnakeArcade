@@ -66,6 +66,11 @@ function GameService() {
         this.p2Ref = firebase.database().ref('players/' + this.room + '/2');
         this.foodRef = firebase.database().ref('food/' + this.room);
         this.snakeRef = firebase.database().ref('snakes/' + this.room);
+        
+        if(this.snakeRef != null)//game already in progress in another thread, so stop execution
+        {
+            return;
+        }
         this.resetPlayerPosition(-1);
         this.saveSnakeLocation();
         this.setPlayers();
@@ -95,9 +100,14 @@ function GameService() {
         this.updateSnake();
         this.saveSnakeLocation();
 
+        //if player 1 and player 2 is dead end game
+        //also end game if gametime exceeds 10 minutes incase player afk
         if ((this.p1 == null && this.p2 == null && this.refSet === true) || this.timeCounter > 3000)//if both players dead, or game time past 10 minutes, end timer
         {
             clearInterval(this.myTimer);
+            this.p1Ref.set(null);//clean up
+            this.p2Ref.set(null);//clean up
+            this.snakeRef.set(null);
         }
     }
 
