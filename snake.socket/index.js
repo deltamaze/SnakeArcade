@@ -53,10 +53,12 @@ function GameService() {
     this.snakeRef;
     this.p1;
     this.p2;
+
     this.timeCounter = 0;
     this.myTimer;
     this.gameEngine;
     this.refSet = false;
+    
 
 
     this.startGame = function (roomName) {
@@ -67,15 +69,19 @@ function GameService() {
         this.foodRef = firebase.database().ref('food/' + this.room);
         this.snakeRef = firebase.database().ref('snakes/' + this.room);
         
-        if(this.snakeRef != null)//game already in progress in another thread, so stop execution
-        {
-            return;
-        }
+        
         this.resetPlayerPosition(-1);
         this.saveSnakeLocation();
         this.setPlayers();
         this.spawnFood();
-        this.myTimer = setInterval(this.gameEngine.bind(this), this.gameUpdateTime);
+        this.snakeRef.once('value').then(function(snapshot) {
+            
+            if(snapshot.val() !== null)
+            {
+                console.log(snapshot.val());
+                this.myTimer = setInterval(this.gameEngine.bind(this), this.gameUpdateTime);
+            }
+        }.bind(this));
     }
     this.setPlayers = function () {
 

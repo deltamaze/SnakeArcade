@@ -13,17 +13,22 @@ var roomPing = {
 };
 
 var p1Ref = firebase.database().ref('players/' + room + '/' + 1);
+var p1CallBack;
 var p2Ref = firebase.database().ref('players/' + room + '/' + 2);
+var p2CallBack;
 //var snakesRef = firebase.database().ref('snakes/'+room+'/'+1);
 var foodRef = firebase.database().ref('food/' + room );
-var snakeRef = firebase.database().ref('snakes/' + this.room );
+var foodCallBack;
+var snakeRef = firebase.database().ref('snakes/' + room );
+var snakeCallBack
+
 var snakes = [new Snake()]
 var food = new Vector();
 
 //Client Function get player status
 function setUpRefs() {
   //check p1
-  p1Ref.on('value', function (snapshot) {
+  p1CallBack = p1Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
       $('#buttonP1').prop('disabled', false);
     }
@@ -33,7 +38,7 @@ function setUpRefs() {
 
   });
   //check p2
-  p2Ref.on('value', function (snapshot) {
+  p2CallBack = p2Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
       $('#buttonP2').prop('disabled', false);
     }
@@ -43,12 +48,14 @@ function setUpRefs() {
 
   });
   //setupFood
-  foodRef.on('value', function (snapshot) {
+  foodCallBack =foodRef.on('value', function (snapshot) {
     food = snapshot.val()});
   //setupSnakes
-  snakeRef.on('value', function (snapshot) {
+  snakeCallBack = snakeRef.on('value', function (snapshot) {
     snakes = snapshot.val();
-    });
+  });
+  //set up RoomLabel
+  document.getElementById("currRoomLabel").innerHTML = "Current Room - "+room;
 }
 //Authenticate
 firebase.auth().signInAnonymously().then(function () {
@@ -79,6 +86,17 @@ function joinGame(num) {
   {
     firebase.database().ref('players/' + room + '/' + player.playerNum).set(player).then(res => setUpRefs());
   }
+}
+//Client Function: join start
+function joinRoom() {
+  //turn off current listeners to old room
+  p1Ref.off('value', p1CallBack);
+  p2Ref.off('value', p2CallBack);
+  foodRef.off('value', foodCallBack);
+  snakeRef.off('value', snakeCallBack);
+  //room = textBox.text
+  setUpRefs();
+
 }
 //Update Direction
 function setCourse(x, y) {
