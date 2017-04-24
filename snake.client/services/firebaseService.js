@@ -17,9 +17,9 @@ var p1CallBack;
 var p2Ref = firebase.database().ref('players/' + room + '/' + 2);
 var p2CallBack;
 //var snakesRef = firebase.database().ref('snakes/'+room+'/'+1);
-var foodRef = firebase.database().ref('food/' + room );
+var foodRef = firebase.database().ref('food/' + room);
 var foodCallBack;
-var snakeRef = firebase.database().ref('snakes/' + room );
+var snakeRef = firebase.database().ref('snakes/' + room);
 var snakeCallBack
 
 var snakes = [new Snake()]
@@ -48,14 +48,15 @@ function setUpRefs() {
 
   });
   //setupFood
-  foodCallBack =foodRef.on('value', function (snapshot) {
-    food = snapshot.val()});
+  foodCallBack = foodRef.on('value', function (snapshot) {
+    food = snapshot.val()
+  });
   //setupSnakes
   snakeCallBack = snakeRef.on('value', function (snapshot) {
     snakes = snapshot.val();
   });
   //set up RoomLabel
-  document.getElementById("currRoomLabel").innerHTML = "Current Room - "+room;
+  document.getElementById("currRoomLabel").innerHTML = "Current Room - " + room;
 }
 //Authenticate
 firebase.auth().signInAnonymously().then(function () {
@@ -80,7 +81,7 @@ setInterval(function () {
 
 //Client Function: join start
 function joinGame(num) {
-  
+
   player.playerNum = num;
   if (firebase.auth().currentUser)//if authenticated
   {
@@ -88,15 +89,37 @@ function joinGame(num) {
   }
 }
 //Client Function: join start
-function joinRoom() {
+function joinRoom(roomName) {
   //turn off current listeners to old room
   p1Ref.off('value', p1CallBack);
   p2Ref.off('value', p2CallBack);
   foodRef.off('value', foodCallBack);
   snakeRef.off('value', snakeCallBack);
-  //room = textBox.text
-  setUpRefs();
+  if (roomName == null||roomName == '') {
+    room = document.getElementById("textboxRoom").value;
+  }
+  else {
+    room=roomName;
+  }
 
+  setUpRefs();
+}
+function getActiveRooms() {
+  firebase.database().ref('rooms/')
+
+  var list = document.getElementById('roomList');
+  list.innerText = '';
+  var startAtDate = new Date().getTime();
+  startAtDate = startAtDate - 30000//get rooms with activity 30 seconds ago, so remove 30000 miliseconds
+  firebase.database().ref('rooms').orderByChild("timestamp").startAt(startAtDate).once("value", function(snapshot) {
+    snapshot.forEach(function(child) {
+      console.log(child.key+': '+child.val());
+      var tr = document.createElement('li');
+      tr.innerText = child.key;
+      //td.innerText = child.val().email + " --- " + JSON.stringify(child.val());
+      list.appendChild(tr);
+    });
+  });
 }
 //Update Direction
 function setCourse(x, y) {

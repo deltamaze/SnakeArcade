@@ -16,9 +16,8 @@ app.get('/startgame/:roomName', function(req, res){
         gameService.startGame(req.params.roomName);
   res.send('<h1>'+req.params.roomName+'</h1>');
 });
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+const PORT = process.env.PORT || 8080;
+http.listen(PORT, function(){
 });
 
 
