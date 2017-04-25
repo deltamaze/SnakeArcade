@@ -10,14 +10,21 @@ var config = {
 };
 firebase.initializeApp(config);
 
-app.get('/startgame/:roomName', function(req, res){
-        
-        gameService = new GameService();
-        gameService.startGame(req.params.roomName);
-  res.send('<h1>'+req.params.roomName+'</h1>');
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
+app.get('/startgame/:roomName', function (req, res) {
+
+    gameService = new GameService();
+    gameService.startGame(req.params.roomName);
+    res.send('<h1>' + req.params.roomName + '</h1>');
+});
+
 const PORT = process.env.PORT || 8080;
-http.listen(PORT, function(){
+http.listen(PORT, function () {
 });
 
 
@@ -57,7 +64,7 @@ function GameService() {
     this.myTimer;
     this.gameEngine;
     this.refSet = false;
-    
+
 
 
     this.startGame = function (roomName) {
@@ -67,20 +74,17 @@ function GameService() {
         this.p2Ref = firebase.database().ref('players/' + this.room + '/2');
         this.foodRef = firebase.database().ref('food/' + this.room);
         this.snakeRef = firebase.database().ref('snakes/' + this.room);
-        
-        
-        this.resetPlayerPosition(-1);
-        this.saveSnakeLocation();
-        this.setPlayers();
-        this.spawnFood();
-        this.snakeRef.once('value').then(function(snapshot) {
-            
-            if(snapshot.val() !== null)
-            {
-                console.log(snapshot.val());
+        this.snakeRef.once('value').then(function (snapshot) {
+            if (!snapshot.val()) {
+                this.resetPlayerPosition(-1);
+                this.saveSnakeLocation();
+                this.setPlayers();
+                this.spawnFood();
                 this.myTimer = setInterval(this.gameEngine.bind(this), this.gameUpdateTime);
             }
         }.bind(this));
+
+
     }
     this.setPlayers = function () {
 
@@ -151,10 +155,8 @@ function GameService() {
 
                         if (this.snakes[i].playerNum === 1) {
                             this.p1Ref.set(null);
-
                         }
-                        else (this.snakes[i].playerNum === 2)
-                        {
+                        if (this.snakes[i].playerNum === 2) {
                             this.p2Ref.set(null);
                         }
                     }
