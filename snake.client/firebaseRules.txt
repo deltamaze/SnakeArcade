@@ -1,7 +1,7 @@
 {
   "rules": {
     ".read": true,
-    ".write": false,
+    ".write": true,
     "rooms":{
       "$room": {
         ".write": "newData.hasChildren(['user', 'timestamp'])",
@@ -20,27 +20,107 @@
     },
     "players":{
       "$room": {
-        ".write": "newData.hasChildren(['user', 'playerNum','x','y']) && !data.exists()",
-        "user":
-        {
-          ".validate": "auth.uid === newData.val() "
+        "$player":{
+          ".write" : "newData.hasChildren(['user', 'playerNum','xSpeed','ySpeed']) && (!data.exists() || data.child('user').val() === newData.child('user').val())",
+          "user":
+          {
+            ".write": "newData.hasChildren(['user', 'playerNum','xSpeed','ySpeed'])",
+            ".validate": "auth.uid === newData.val() "
+          },
+          "playerNum":
+          {
+            ".validate": "newData.val() === 1 || newData.val() === 2 "
+          },
+          "xSpeed":
+          {
+            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          },
+          "ySpeed":
+          {
+            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          },
+          "$other": {
+              ".validate": false 
+          }
         },
-        "playerNum":
-        {
-          ".validate": "newData.val() === 1 || newData.val() === 2 "
-        },
+      }
+    },
+    "food":{
+      "$room": {
+        ".write" : "newData.hasChildren(['x','y'])",
         "x":
         {
-          ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          ".validate": "newData.val() >= 0 && newData.val() <= 300"
         },
         "y":
         {
-          ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          ".validate": "newData.val() >= 0 && newData.val() <= 300"
         },
         "$other": {
             ".validate": false 
         }
       }
-    }
+    },
+    "snakes":{
+      "$room": {
+        "$player":{
+          ".write" : "newData.hasChildren(['playerNum','total','vect'])",
+          "gameOver":
+          {
+            ".validate": "newData.isBoolean()"
+          },
+          "playerNum":
+          {
+            ".validate": "newData.val() === 1 || newData.val() === 2 "
+          },
+          "tail":
+          {
+            "$pos":{
+              ".write" : "newData.hasChildren(['x','y'])",
+              "x":
+              {
+                ".validate": "newData.val() >= 0 && newData.val() <= 300"
+              },
+              "y":
+              {
+                ".validate": "newData.val() >= 0 && newData.val() <= 300"
+              },
+              "$other": {
+                  ".validate": false 
+              }
+            }
+          },
+          "total":
+          {
+            ".validate": "newData.val() >= 0 && newData.val() <= 1000"
+          },
+          "vect":{
+            ".write" : "newData.hasChildren(['x','y'])",
+            "x":
+            {
+              ".validate": "newData.val() >= 0 && newData.val() <= 300"
+            },
+            "y":
+            {
+              ".validate": "newData.val() >= 0 && newData.val() <= 300"
+            },
+            "$other": {
+                ".validate": false 
+            }
+          },
+          "xSpeed":
+          {
+            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          },
+          "ySpeed":
+          {
+            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
+          },
+          "$other": {
+              ".validate": false 
+          }
+        },
+      }
+    },
   }
 }
