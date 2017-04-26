@@ -1,7 +1,7 @@
 {
   "rules": {
     ".read": true,
-    ".write": true,
+    ".write": false,
     "rooms":{
       "$room": {
         ".write": "newData.hasChildren(['user', 'timestamp'])",
@@ -50,76 +50,15 @@
         ".write" : "newData.hasChildren(['x','y'])",
         "x":
         {
-          ".validate": "newData.val() >= 0 && newData.val() <= 300"
+          ".validate": "newData.val() >= -10 && newData.val() <= 300"
         },
         "y":
         {
-          ".validate": "newData.val() >= 0 && newData.val() <= 300"
+          ".validate": "newData.val() >= -10 && newData.val() <= 300"
         },
         "$other": {
             ".validate": false 
         }
-      }
-    },
-    "snakes":{
-      "$room": {
-        "$player":{
-          ".write" : "newData.hasChildren(['playerNum','total','vect'])",
-          "gameOver":
-          {
-            ".validate": "newData.isBoolean()"
-          },
-          "playerNum":
-          {
-            ".validate": "newData.val() === 1 || newData.val() === 2 "
-          },
-          "tail":
-          {
-            "$pos":{
-              ".write" : "newData.hasChildren(['x','y'])",
-              "x":
-              {
-                ".validate": "newData.val() >= 0 && newData.val() <= 300"
-              },
-              "y":
-              {
-                ".validate": "newData.val() >= 0 && newData.val() <= 300"
-              },
-              "$other": {
-                  ".validate": false 
-              }
-            }
-          },
-          "total":
-          {
-            ".validate": "newData.val() >= 0 && newData.val() <= 1000"
-          },
-          "vect":{
-            ".write" : "newData.hasChildren(['x','y'])",
-            "x":
-            {
-              ".validate": "newData.val() >= 0 && newData.val() <= 300"
-            },
-            "y":
-            {
-              ".validate": "newData.val() >= 0 && newData.val() <= 300"
-            },
-            "$other": {
-                ".validate": false 
-            }
-          },
-          "xSpeed":
-          {
-            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
-          },
-          "ySpeed":
-          {
-            ".validate": "newData.val() === -1 || newData.val() === 0 || newData.val() === 1 "
-          },
-          "$other": {
-              ".validate": false 
-          }
-        },
       }
     },
   }

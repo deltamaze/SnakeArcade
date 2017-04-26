@@ -1,4 +1,4 @@
-var room = "Main2";
+var room = "Home";
 
 var player = {
   playerNum: null,
@@ -27,6 +27,16 @@ var food = new Vector();
 
 //Client Function get player status
 function setUpRefs() {
+   p1Ref = firebase.database().ref('players/' + room + '/' + 1);
+   
+   p2Ref = firebase.database().ref('players/' + room + '/' + 2);
+   
+  //var snakesRef = firebase.database().ref('snakes/'+room+'/'+1);
+   foodRef = firebase.database().ref('food/' + room);
+   
+   snakeRef = firebase.database().ref('snakes/' + room);
+   
+
   //check p1
   p1CallBack = p1Ref.on('value', function (snapshot) {
     if (snapshot.val() === null) {
@@ -108,7 +118,6 @@ function joinRoom(roomName) {
   else {
     room=roomName;
   }
-
   setUpRefs();
 }
 function getActiveRooms() {
@@ -120,7 +129,6 @@ function getActiveRooms() {
   startAtDate = startAtDate - 30000//get rooms with activity 30 seconds ago, so remove 30000 miliseconds
   firebase.database().ref('rooms').orderByChild("timestamp").startAt(startAtDate).once("value", function(snapshot) {
     snapshot.forEach(function(child) {
-      console.log(child.key+': '+child.val());
       var li = document.createElement('li');
       li.innerHTML = child.key +' - '
       var btn = document.createElement('button');
