@@ -1,7 +1,7 @@
 # SnakeArcade
 2 player online Snake game 
-
 Live Demo - https://snakearcade-45688.firebaseapp.com/
+
 Node server runs the game, and posts the snake positions into a readable firebase structure.
 Clients are able to send input to firebase, which the node server listens on. The client also listens and draws the snake positions onto a p5.js canvas.
 
