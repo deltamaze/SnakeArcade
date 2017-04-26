@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "express": "^4.15.2",
-    "firebase": "^3.8.0"
+    "firebase": "^3.8.0",
+    "firebase-admin": "^4.2.1"
   }
 }
-

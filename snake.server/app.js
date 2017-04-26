@@ -1,14 +1,12 @@
 var app = require('express')();
 var http = require('http').Server(app);
-var firebase = require('firebase');
-var config = {
-    apiKey: "AIzaSyAmF58NPydsU3OdoGH-qHKAHua3MGx_fpU",
-    authDomain: "snakearcade-45688.firebaseapp.com",
-    databaseURL: "https://snakearcade-45688.firebaseio.com",
-    storageBucket: "snakearcade-45688.appspot.com",
-    messagingSenderId: "1073341661684"
-};
-firebase.initializeApp(config);
+var firebase = require('firebase-admin');
+var serviceAccount = require("./snakearcade-45688-firebase-adminsdk-d15fy-521e0e3393.json");
+
+firebase.initializeApp({
+    credential: firebase.credential.cert(serviceAccount),
+    databaseURL: "https://snakearcade-45688.firebaseio.com"
+});
 
 
 app.use(function (req, res, next) {
@@ -31,8 +29,6 @@ http.listen(PORT, function () {
 
 function Snake() {
     this.vect = new Vector();
-    this.xSpeed = 0;
-    this.ySpeed = 0;
     this.tail = []
     this.playerNum = 0;
     this.total = 0;
@@ -198,10 +194,7 @@ function GameService() {
             this.snakes[j].tail[0].x = this.snakes[j].vect.x;
             this.snakes[j].tail[0].y = this.snakes[j].vect.y;
 
-
-
         }
-
     }
     this.calcDist = function (x1, y1, x2, y2) {
         var a = x1 - x2
@@ -218,7 +211,6 @@ function GameService() {
             this.snakes[0].total = 0
             this.snakes[0].tail = [];
             this.snakes[0].tail[0] = this.snakes[0].vect
-
         }
         if (playerNum === 2 || playerNum === -1) {
             this.snakes[1].vect.x = this.canvasWidth - this.gameScale;//player 1 default spot is set to 0,0 p2 is on the opposite side
@@ -227,9 +219,7 @@ function GameService() {
             this.snakes[1].tail = [];
             this.snakes[1].tail[0] = this.snakes[1].vect
         }
-
     }
-
     this.saveSnakeLocation = function (snakes) {
         this.snakeRef.set(this.snakes);
     }
@@ -251,6 +241,4 @@ function GameService() {
         returnVect = vect;
         return returnVect;
     }
-
 }
-
