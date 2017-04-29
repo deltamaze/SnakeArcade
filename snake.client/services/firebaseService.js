@@ -148,6 +148,10 @@ function getActiveRooms() {
 }
 //Update Direction
 function setCourse(x, y) {
+  if(snakes == null && player.playerNum != null)
+  {
+    joinGame(player.playerNum)
+  }
   if (player.playerNum != null) {
     player.xSpeed = x;
     player.ySpeed = y;
