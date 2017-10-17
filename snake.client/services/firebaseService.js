@@ -100,7 +100,8 @@ function joinGame(num) {
     firebase.database().ref('players/' + room + '/' + player.playerNum).set(player).then(res => setUpRefs());
   }
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://snakearcade-45688.appspot.com/startgame/"+room, false);
+  //xhr.open("GET", "https://snakearcade-45688.appspot.com/startgame/"+room, false);
+  xhr.open("GET", "http://localhost:8080/StartSnakeGame/"+room, false);
   xhr.send();
 }
 //Client Function: join start
