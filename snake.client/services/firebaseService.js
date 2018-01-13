@@ -101,7 +101,7 @@ function joinGame(num) {
   }
   var xhr = new XMLHttpRequest();
   //xhr.open("GET", "https://snakearcade-45688.appspot.com/startgame/"+room, false);
-  xhr.open("GET", "https://storygameapi.kilomaze.com/StartSnakeGame/"+room, false);
+  xhr.open("GET", "https://apis.wpooley.com/StartSnakeGame/"+room, false);
   xhr.send();
 }
 //Client Function: join start
