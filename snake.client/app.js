@@ -3,12 +3,12 @@ var p1Color;
 var p2Color;
 var foodColor;
 var gameScale;
-//Setup Canvas
+//Setup Canvas 
 function setup() {
     var canvas = createCanvas(300,300);
     canvas.parent('p5-holder');
     
-    p1Color =  color(0, 102, 255)//blue
+    p1Color =  color(0, 102, 255)//color blue
     p2Color = color(255, 0, 0);//red
     foodColor = color(255,0,100);//pink
     gameScale = 10;
